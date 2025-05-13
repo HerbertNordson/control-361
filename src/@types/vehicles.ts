@@ -4,3 +4,26 @@ export interface vehiclesListRequestDto {
   page: number;
   perPage?: number;
 }
+
+export interface vehicles {
+  id: string;
+  plate: string;
+  fleet: string | null;
+  type: string;
+  model: string;
+  nameOwner: string;
+  status: string;
+  createdAt: string;
+}
+
+export interface locationVehicles {
+  id: string;
+  fleet: string;
+  equipmentId: string;
+  name: string;
+  plate: string;
+  ignition: string;
+  lat: number;
+  lng: number;
+  createdAt: string;
+}

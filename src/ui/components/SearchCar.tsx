@@ -1,12 +1,27 @@
 import { useState } from "react";
 import { VehiclesRequests } from "../../api/vehicles";
+import { useVehiclesContext } from "../../contexts/vehiclesContext";
 
 export const SearchCar = () => {
   const [filter, setFilter] = useState<string>("");
+  const [type, setType] = useState<"tracked" | "others">("tracked");
 
   const { getList: listCar } = VehiclesRequests();
+  const { setVehicles, setMaps } = useVehiclesContext();
 
-  function onSubmit() {}
+  async function onSubmit() {
+    const res = await listCar({
+      filter: filter,
+      type: type,
+      page: 1,
+      perPage: 20,
+    });
+
+    if (res) {
+      setVehicles(res.vehicles);
+      setMaps(res.locationVehicles);
+    }
+  }
 
   return (
     <section className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-accessories pb-6">
@@ -21,12 +36,10 @@ export const SearchCar = () => {
                 value="tracked"
                 className="appearance-none w-2 h-2 rounded-full checked:bg-accessories checked:border-accessories"
                 defaultChecked
-                onChange={(ev) =>
-                  listCar({
-                    type: ev.target.value as "tracked" | "others",
-                    page: 20,
-                  })
-                }
+                onChange={(ev) => {
+                  setType(ev.target.value as "tracked" | "others");
+                  onSubmit();
+                }}
               />
             </div>
             Rastreados
@@ -39,12 +52,10 @@ export const SearchCar = () => {
                 name="status"
                 value="others"
                 className="appearance-none w-2 h-2 rounded-full checked:bg-accessories checked:border-accessories"
-                onChange={(ev) =>
-                  listCar({
-                    type: ev.target.value as "tracked" | "others",
-                    page: 20,
-                  })
-                }
+                onChange={(ev) => {
+                  setType(ev.target.value as "tracked" | "others");
+                  onSubmit();
+                }}
               />
             </div>
             Outros
