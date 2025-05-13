@@ -1,5 +1,5 @@
 import api from "..";
-import type { vehiclesListRequestDto } from "../../types/vehicles";
+import type { vehiclesListRequestDto } from "../../@types/vehicles";
 
 export const VehiclesRequests = () => {
   async function getList({

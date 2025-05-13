@@ -1,25 +1,13 @@
-import { useEffect, useState } from "react";
+import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "./routes/app.routes";
 import "./App.css";
-import { VehiclesRequests } from "./api/vehicles";
 
 function App() {
-  const { getList: listVehicles } = VehiclesRequests();
-  const [data, setData] = useState();
-  async function list() {
-    const dt = await listVehicles({ type: "tracked", page: 1 });
-    if (dt) {
-      setData(dt);
-      console.log(dt);
-    }
-  }
-
-  useEffect(() => {
-    if (!data) {
-      list();
-    }
-  }, [data]);
-
-  return <div className="min-h-screen"></div>;
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
 }
 
-export default App;
+export default App

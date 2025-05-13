@@ -1,11 +1,24 @@
+@import "tailwindcss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @theme {
-  --gap-base: 1rem
+  /* Background */
+  --color-primary: rgba(0, 15, 23, 1);
+  --color-secundary: rgba(0, 30, 46, 1);
+  --color-accessories: rgba(0, 149, 228, 1);
+
+  /* Color text */
+  --color-textPrimary: rgba(255, 255, 255, 1);
+
+  /* Color border */
+  --color-input: rgba(137, 145, 155, 1);
+  --color-section: rgba(0, 45, 68, 1);
+
 }
 
 * {
-  margin: 0;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
 }
