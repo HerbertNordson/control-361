@@ -33,14 +33,16 @@ const VehiclesMaps = () => {
     <div className="rounded-3xl overflow-hidden">
       <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
         <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={5}>
-          {maps.map((v, i) => (
-            <Marker
-              key={i}
-              position={{ lat: v.lat, lng: v.lng }}
-              onClick={() => setVeiculoSelecionado(v)}
-              title={`Placa: ${v.plate}`}
-            />
-          ))}
+          {maps &&
+            maps.length > 0 &&
+            maps.map((v, i) => (
+              <Marker
+                key={i}
+                position={{ lat: v.lat, lng: v.lng }}
+                onClick={() => setVeiculoSelecionado(v)}
+                title={`Placa: ${v.plate}`}
+              />
+            ))}
 
           {veiculoSelecionado && (
             <OverlayView
