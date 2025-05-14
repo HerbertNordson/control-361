@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { VehiclesRequests } from "../../api/vehicles";
 import { useVehiclesContext } from "../../contexts/vehiclesContext";
+import type { locationVehicles, vehicles } from "../../@types/vehicles";
 
 export const SearchCar = () => {
   const [filter, setFilter] = useState<string>("");
-  const [type, setType] = useState<"tracked" | "others">("tracked");
 
   const { getList: listCar } = VehiclesRequests();
-  const { setVehicles, setMaps } = useVehiclesContext();
+  const { maps, setVehicles, setMaps } = useVehiclesContext();
 
-  async function onSubmit() {
+  async function onSubmit(type: "tracked" | "others") {
     const res = await listCar({
       filter: filter,
       type: type,
@@ -18,8 +18,17 @@ export const SearchCar = () => {
     });
 
     if (res) {
-      setVehicles(res.vehicles);
-      setMaps(res.locationVehicles);
+      setVehicles(res.content.vehicles);
+
+      if (type !== "tracked") {
+        const mapFilter: Array<locationVehicles> = maps.filter(
+          (item: locationVehicles) =>
+            res.content.vehicles.find((el: vehicles) => el.plate === item.plate)
+        );
+        setMaps(mapFilter);
+      }
+
+      setMaps(res.content.locationVehicles);
     }
   }
 
@@ -37,8 +46,7 @@ export const SearchCar = () => {
                 className="appearance-none w-2 h-2 rounded-full checked:bg-accessories checked:border-accessories"
                 defaultChecked
                 onChange={(ev) => {
-                  setType(ev.target.value as "tracked" | "others");
-                  onSubmit();
+                  onSubmit(ev.target.value as "tracked" | "others");
                 }}
               />
             </div>
@@ -53,8 +61,7 @@ export const SearchCar = () => {
                 value="others"
                 className="appearance-none w-2 h-2 rounded-full checked:bg-accessories checked:border-accessories"
                 onChange={(ev) => {
-                  setType(ev.target.value as "tracked" | "others");
-                  onSubmit();
+                  onSubmit(ev.target.value as "tracked" | "others");
                 }}
               />
             </div>
@@ -75,7 +82,7 @@ export const SearchCar = () => {
           className={`w-2/5 p-3 rounded-lg bg-accessories cursor-pointer hover:opacity-60 ${
             !filter ? "bg-gray-400 opacity-40" : ""
           }`}
-          onClick={onSubmit}
+          onClick={() => onSubmit("tracked")}
           disabled={!filter}
         >
           Buscar

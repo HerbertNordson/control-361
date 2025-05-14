@@ -28,10 +28,10 @@ export const VehiclesProvider: React.FC<IProvider> = ({ children }) => {
     const res = await getList({ type: "tracked", page: 1, perPage: 20 });
 
     if (res) {
-      setVehicles(res.vehicles);
-      setMaps(res.locationVehicles);
+      setVehicles(res.content.vehicles);
+      setMaps(res.content.locationVehicles);
     }
-  }, []);
+  }, [getList]);
 
   useEffect(() => {
     getVehicles();

@@ -29,20 +29,25 @@ const VehiclesMaps = () => {
       timeZone: "America/Sao_Paulo",
     });
 
+  if (!maps)
+    return (
+      <div className="w-full text-center">
+        <i>Nenhum veículo disponível para rastreio.</i>
+      </div>
+    );
+
   return (
     <div className="rounded-3xl overflow-hidden">
       <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
         <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={5}>
-          {maps &&
-            maps.length > 0 &&
-            maps.map((v, i) => (
-              <Marker
-                key={i}
-                position={{ lat: v.lat, lng: v.lng }}
-                onClick={() => setVeiculoSelecionado(v)}
-                title={`Placa: ${v.plate}`}
-              />
-            ))}
+          {maps.map((v, i) => (
+            <Marker
+              key={i}
+              position={{ lat: v.lat, lng: v.lng }}
+              onClick={() => setVeiculoSelecionado(v)}
+              title={`Placa: ${v.plate}`}
+            />
+          ))}
 
           {veiculoSelecionado && (
             <OverlayView
@@ -57,7 +62,11 @@ const VehiclesMaps = () => {
                 <p className="text-sm">
                   {newDate(veiculoSelecionado.createdAt)}
                 </p>
-                <a href="#" className="text-accessories hover:opacity-40">
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${veiculoSelecionado.lat},${veiculoSelecionado.lng}`}
+                  target="__blank"
+                  className="text-accessories hover:opacity-40"
+                >
                   Latitude: {veiculoSelecionado.lat} | Longitude:{" "}
                   {veiculoSelecionado.lng}
                 </a>

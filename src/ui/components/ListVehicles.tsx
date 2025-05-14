@@ -4,6 +4,13 @@ import { useVehiclesContext } from "../../contexts/vehiclesContext";
 export const ListVehicles = () => {
   const { vehicles } = useVehiclesContext();
 
+  if (!vehicles)
+    return (
+      <div className="w-full text-center">
+        <i>Loading...</i>
+      </div>
+    );
+
   return (
     <section>
       <div className="border border-section bg-secundary rounded-3xl overflow-hidden">
